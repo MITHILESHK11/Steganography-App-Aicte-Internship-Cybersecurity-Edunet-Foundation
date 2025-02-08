@@ -14,7 +14,7 @@ def encode_message(image, message):
         for pixel in row:
             for i in range(3):  # Loop through R, G, B
                 if data_index < len(binary_msg):
-                    pixel[i] = pixel[i] & ~1 | int(binary_msg[data_index])
+                    pixel[i] = (pixel[i] & 254) | int(binary_msg[data_index])  # Ensures value stays in 0-255 range
                     data_index += 1
                 else:
                     return img
