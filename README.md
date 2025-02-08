@@ -55,14 +55,6 @@ streamlit run app.py
    - Verifies the password before revealing the hidden message.
    - If the password is wrong, the image appears as a normal image.
 
-## 📂 Project Structure
-```
-📂 Secure Image Steganography
-│── app.py             # Main Streamlit application
-│── requirements.txt   # List of dependencies
-│── README.md          # Documentation
-```
-
 ## 🔐 Security Measures
 - **Password Protection:** Messages can only be decrypted with the correct password.
 - **Stealth Mode:** Without the correct password, the image looks normal.
