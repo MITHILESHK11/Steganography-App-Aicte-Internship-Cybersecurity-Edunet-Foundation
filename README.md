@@ -3,6 +3,9 @@
 ## 📌 Overview
 This is a **password-protected image steganography app** built using **Streamlit** and **OpenCV**. It allows you to **hide secret messages inside images** and retrieve them only with the correct password.
 
+## 🔐 Try it for yourself
+https://image-steganography.streamlit.app/
+
 ## 🚀 Features
 - **Encrypt Secret Messages** into images without visible changes.
 - **Decrypt Messages Securely** using a password.
