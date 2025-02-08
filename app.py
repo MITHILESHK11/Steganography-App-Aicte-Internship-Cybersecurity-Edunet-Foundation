@@ -1,62 +1,10 @@
 import streamlit as st
 import cv2
 import numpy as np
-import hashlib
+from encrypt import encode_message
+from decrypt import decode_message
 
-# Function to hash the password for security
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()[:16]  # 16-char hash
-
-# Function to embed message and password into image
-def encode_message(image, message, password):
-    password_hash = hash_password(password)
-    secret_data = password_hash + "þ" + message  # Include hashed password in the message
-    binary_msg = ''.join(format(ord(i), '08b') for i in secret_data)
-    binary_msg += '1111111111111110'  # End-of-message delimiter
-
-    data_index = 0
-    img = image.copy()
-    for row in img:
-        for pixel in row:
-            for i in range(3):  # Loop through R, G, B
-                if data_index < len(binary_msg):
-                    pixel[i] = (pixel[i] & 254) | int(binary_msg[data_index])  # Ensure within 0-255 range
-                    data_index += 1
-                else:
-                    return img
-    return img
-
-# Function to extract and verify password before showing message
-def decode_message(image, password):
-    binary_msg = ""
-    for row in image:
-        for pixel in row:
-            for i in range(3):
-                binary_msg += str(pixel[i] & 1)
-
-    # Stop at the end-of-message delimiter
-    delimiter = '1111111111111110'
-    end_index = binary_msg.find(delimiter)
-    if end_index != -1:
-        binary_msg = binary_msg[:end_index]
-
-    # Convert binary to text
-    chars = [binary_msg[i:i+8] for i in range(0, len(binary_msg), 8)]
-    extracted_data = "".join(chr(int(c, 2)) for c in chars)
-
-    # Extract stored password hash and message
-    stored_password_hash = extracted_data[:16]  # Extract the first 16 characters (hash)
-    hidden_message = extracted_data[17:] if len(extracted_data) > 17 else ""  # Extract the actual message
-
-    # Verify password
-    if stored_password_hash == hash_password(password):
-        return hidden_message
-    else:
-        return "⚠️ Incorrect Password! Image contains no visible message."
-
-# Streamlit UI
 st.title("🛡️ Secure Image Steganography App")
-
 menu = st.sidebar.radio("Select an option:", ["Encrypt Message", "Decrypt Message"])
 
 if menu == "Encrypt Message":
@@ -88,3 +36,4 @@ elif menu == "Decrypt Message":
         # Decrypt message
         hidden_msg = decode_message(encrypted_img, password)
         st.success(f"Decrypted Message: {hidden_msg}")
+
