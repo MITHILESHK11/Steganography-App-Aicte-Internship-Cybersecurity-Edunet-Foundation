@@ -14,9 +14,9 @@ def encode_message(image, message, password):
     img = image.copy()
     for row in img:
         for pixel in row:
-            for i in range(3):  # Loop through R, G, B
+            for i in range(3): 
                 if data_index < len(binary_msg):
-                    pixel[i] = (pixel[i] & 254) | int(binary_msg[data_index])  # Ensure within 0-255 range
+                    pixel[i] = (pixel[i] & 254) | int(binary_msg[data_index])  
                     data_index += 1
                 else:
                     return img
